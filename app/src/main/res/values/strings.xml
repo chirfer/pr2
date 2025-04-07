@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DroidQuest</string>
+    <string name="question1">OC Android основана на ядре Linux?</string>
+    <string name="true_button">Да</string>
+    <string name="false_button">Нет</string>
+    <string name="correct_toast">Верно</string>
+    <string name="incorrect_toast">Неверно</string>
+</resources>
