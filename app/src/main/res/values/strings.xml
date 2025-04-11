@@ -11,4 +11,9 @@
     <string name="question_service">Компонент Android-приложения Service предоставляют доступ к данным</string>
     <string name="question_res">Ресурсы приложения содержатся в отдельном файле XML</string>
     <string name="question_manifest">AndroidManifest.xml предоставляет системе основную информацию о программе</string>
+    <string name="question_1">Является ли Android OC с открытым исходным кодом</string>
+    <string name="question_2">Поддерживает ли Android многозадачность</string>
+    <string name="question_3">Обязательно ли использовать Java для разработки приложений</string>
+    <string name="question_4">Удаляются ли данные приложения после его удаления</string>
+    <string name="question_5">Можно ли запускать приложения на Android Studio без эмуляции</string>
 </resources>
