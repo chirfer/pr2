@@ -33,7 +33,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/false_button"/>
+
         </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/deceit_button"
+            android:text="@string/deceit_button" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,6 +56,7 @@
                 android:layout_height="40dp"
                 android:id="@+id/next_button"
                 android:src="@mipmap/arrow_right"/>
+
 
         </LinearLayout>
 

@@ -16,4 +16,9 @@
     <string name="question_3">Обязательно ли использовать Java для разработки приложений</string>
     <string name="question_4">Удаляются ли данные приложения после его удаления</string>
     <string name="question_5">Можно ли запускать приложения на Android Studio без эмуляции</string>
+    <string name="warning_text">Вы уверены, что хотите это сделать?</string>
+    <string name="show_answer_button">Показать ответ</string>
+    <string name="deceit_button">Обмануть</string>
+    <string name="judgement_toast">Обманывать нельзя</string>
+    <string name="title_activity_deceit">Обман</string>
 </resources>

@@ -1,5 +1,7 @@
 package ru.rsue.android.droidquest;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,21 +22,31 @@ public class MainActivity extends AppCompatActivity {
     private void updateQuestion(){
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
+
     }
-    private void checkAnswer(boolean userPressedTrue){
+
+    private void checkAnswer(boolean userPressedTrue) {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
         int messageResId = 0;
-        if (userPressedTrue == answerIsTrue){
-            messageResId = R.string.correct_toast;
-        }else{
-            messageResId = R.string.incorrect_toast;
+
+
+        if (mIsDeceiterArray[mCurrentIndex]) {
+            messageResId = R.string.judgement_toast;
+        } else {
+            if (userPressedTrue == answerIsTrue) {
+                messageResId = R.string.correct_toast;
+            } else {
+                messageResId = R.string.incorrect_toast;
+            }
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
     }
     private static final String TAG = "MainActivity";
     private static final String KEY_INDEX = "index";
+
     private Button mTrueButton;
     private Button mFalseButton;
+    private Button mDeceitButton;
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
     private TextView mQuestionTextView;
@@ -51,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
             new Question(R.string.question_5, false)
     };
     private int mCurrentIndex = 0;
+    private boolean[] mIsDeceiterArray = new boolean[mQuestionBank.length];
+    private static final int REQUEST_CODE_DECEIT = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            mIsDeceiterArray = savedInstanceState.getBooleanArray("deceiter_array");
+            if (mIsDeceiterArray == null) {
+                mIsDeceiterArray = new boolean[mQuestionBank.length];
+            }
+        }
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
 
         mTrueButton = (Button) findViewById(R.id.true_button);
@@ -76,6 +97,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAnswer(false);
+            }
+        });
+        mDeceitButton = (Button)findViewById(R.id.deceit_button);
+        mDeceitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                Intent i = DeceitActivity.newIntent(MainActivity.this, answerIsTrue);
+                startActivityForResult(i, REQUEST_CODE_DECEIT);
             }
         });
         mNextButton = (ImageButton)findViewById(R.id.next_button);
@@ -109,13 +139,22 @@ public class MainActivity extends AppCompatActivity {
         }
         updateQuestion();
         }
-
-        @Override
-        public void onSaveInstanceState(Bundle savedInstanceState){
-            super.onSaveInstanceState(savedInstanceState);
-            Log.i(TAG, "onSaveInstanceState");
-            savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) return;
+        if (requestCode == REQUEST_CODE_DECEIT) {
+            if (data == null) return;
+            mIsDeceiterArray[mCurrentIndex] = DeceitActivity.wasAnswerShown(data);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_INDEX, mCurrentIndex);
+        outState.putBooleanArray("deceiter_array", mIsDeceiterArray);
+    }
 
         @Override
         public void onStart(){
